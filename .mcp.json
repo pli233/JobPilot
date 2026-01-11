@@ -1,0 +1,73 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "chrome-devtools-mcp@latest"
+      ]
+    },
+    "firecrawl-mcp": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "firecrawl-mcp"
+      ],
+      "env": {
+        "FIRECRAWL_API_KEY": "fc-84fa0ebc682442f093417d78c6968c9d"
+      }
+    },
+    "linkedin": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-e",
+        "LINKEDIN_COOKIE",
+        "stickerdaniel/linkedin-mcp-server:latest"
+      ],
+      "env": {
+        "LINKEDIN_COOKIE": "AQEDAUOYKGMC5hd8AAABmly7E7gAAAGbuLH0204AIa33B8gw9sY5KL78-7KeZ0x8elmOA2n6hukWkYu7KVwfEo5ZNvwT5JH3YAnYCVEDvpDy_FhzXX7l7WXSxjEU5X89Y7y5q_7yok4O0ihqv3mcw9zb"
+      }
+    },
+    "excel": {
+      "command": "uvx",
+      "args": [
+        "excel-mcp-server",
+        "stdio"
+      ]
+    },
+    "next-devtools": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "next-devtools-mcp@latest"
+      ]
+    },
+    "shadcn": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "shadcn@latest",
+        "mcp"
+      ]
+    },
+    "tailwindcss-server": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "tailwindcss-mcp-server"
+      ]
+    }
+  }
+}

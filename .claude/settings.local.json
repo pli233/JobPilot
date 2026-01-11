@@ -1,0 +1,50 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --use-npm --no-turbopack --import-alias \"@/*\")",
+      "Bash(npm install:*)",
+      "Bash(npx shadcn@latest init:*)",
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(npx drizzle-kit push:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx tsx:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "mcp__excel__create_workbook",
+      "mcp__excel__write_data_to_excel",
+      "mcp__excel__read_data_from_excel",
+      "mcp__excel__rename_worksheet",
+      "mcp__excel__format_range",
+      "mcp__excel__create_worksheet",
+      "mcp__excel__get_workbook_metadata",
+      "mcp__excel__create_chart",
+      "mcp__excel__create_table",
+      "mcp__firecrawl-mcp__firecrawl_search",
+      "mcp__firecrawl-mcp__firecrawl_scrape",
+      "mcp__firecrawl-mcp__firecrawl_extract",
+      "mcp__linkedin__search_jobs",
+      "mcp__linkedin__get_job_details",
+      "mcp__linkedin__get_company_profile",
+      "mcp__linkedin__get_person_profile",
+      "mcp__chrome-devtools__navigate_page",
+      "mcp__chrome-devtools__take_snapshot",
+      "mcp__chrome-devtools__fill_form",
+      "mcp__chrome-devtools__fill",
+      "mcp__chrome-devtools__upload_file",
+      "mcp__chrome-devtools__click",
+      "mcp__chrome-devtools__take_screenshot",
+      "mcp__chrome-devtools__wait_for",
+      "mcp__chrome-devtools__list_pages",
+      "Bash(copy \"c:\\\\Users\\\\23995\\\\Desktop\\\\找工\\\\2025 秋\\\\Current\\\\Peiyuan Li Resume 26NG.pdf\" \"K:\\\\JobPilot\\\\data\\\\resumes\\\\resume_main.pdf\")"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "chrome-devtools",
+    "firecrawl-mcp",
+    "linkedin",
+    "excel",
+    "next-devtools",
+    "shadcn",
+    "tailwindcss-server"
+  ]
+}

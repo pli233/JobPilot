@@ -1,0 +1,76 @@
+{
+  "job_search": {
+    "keywords": [
+      "Software Engineer",
+      "Backend",
+      "Python"
+    ],
+    "titles": [
+      "Software Engineer",
+      "Backend Engineer",
+      "Senior Software Engineer"
+    ],
+    "locations": [
+      "San Francisco Bay Area",
+      "Remote"
+    ],
+    "remote_preference": "remote",
+    "job_types": [
+      "Full-time"
+    ],
+    "experience_levels": [
+      "Mid-Senior level",
+      "Senior"
+    ],
+    "industries": [],
+    "company_sizes": []
+  },
+
+  "salary": {
+    "minimum": 150000,
+    "maximum": null,
+    "currency": "USD",
+    "period": "yearly",
+    "include_equity": true,
+    "negotiable": true
+  },
+
+  "companies": {
+    "preferred": [],
+    "excluded": [
+      "Staffing Agency",
+      "Recruiting Firm"
+    ],
+    "blacklist_reasons": {}
+  },
+
+  "application": {
+    "auto_submit": false,
+    "require_confirmation": true,
+    "save_screenshots": true,
+    "daily_limit": 20,
+    "min_match_score": 60,
+    "skip_easy_apply_only": false,
+    "preferred_platforms": [
+      "LinkedIn",
+      "Company Website"
+    ]
+  },
+
+  "notifications": {
+    "new_matches": true,
+    "application_updates": true,
+    "daily_summary": true
+  },
+
+  "filters": {
+    "posted_within_days": 7,
+    "exclude_staffing": true,
+    "require_salary_info": false,
+    "exclude_keywords": [
+      "intern",
+      "junior",
+      "entry level"
+    ]
+  }
+}

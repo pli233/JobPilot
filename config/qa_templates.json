@@ -1,0 +1,46 @@
+{
+  "templates": [
+    {
+      "id": "why_company",
+      "category": "why_company",
+      "question_patterns": ["why .* interested", "why do you want to work"],
+      "answer_template": "I'm drawn to {company}'s mission and innovative work in {field}. With my background in {skill}, I'm excited to contribute to {contribution}.",
+      "variables": ["company", "field", "skill", "contribution"]
+    },
+    {
+      "id": "salary",
+      "category": "salary",
+      "question_patterns": ["salary", "compensation", "pay expectation"],
+      "answer_template": "Based on my experience and the role's requirements, I'm targeting {range}. However, I'm flexible and open to discussing total compensation including benefits and equity.",
+      "variables": ["range"]
+    },
+    {
+      "id": "availability",
+      "category": "availability",
+      "question_patterns": ["start date", "when can you", "availability", "notice period"],
+      "answer_template": "I can start {timeframe}. I'm flexible on the exact date to accommodate any necessary transitions.",
+      "variables": ["timeframe"]
+    },
+    {
+      "id": "experience_years",
+      "category": "experience",
+      "question_patterns": ["years of experience", "how long have you"],
+      "answer_template": "I have {years} years of professional experience in {field}, with deep expertise in {technologies}.",
+      "variables": ["years", "field", "technologies"]
+    },
+    {
+      "id": "weakness",
+      "category": "behavioral",
+      "question_patterns": ["weakness", "area.*improve", "biggest challenge"],
+      "answer_template": "I've been working on improving my {area}. I've taken steps like {action} which has helped me make significant progress.",
+      "variables": ["area", "action"]
+    },
+    {
+      "id": "remote_preference",
+      "category": "logistics",
+      "question_patterns": ["remote", "work from home", "office", "hybrid"],
+      "answer_template": "I'm most productive in a {preference} environment, but I'm adaptable and can work effectively in various settings based on team needs.",
+      "variables": ["preference"]
+    }
+  ]
+}
