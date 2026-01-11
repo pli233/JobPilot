@@ -35,7 +35,24 @@
       "mcp__chrome-devtools__take_screenshot",
       "mcp__chrome-devtools__wait_for",
       "mcp__chrome-devtools__list_pages",
-      "Bash(copy \"c:\\\\Users\\\\23995\\\\Desktop\\\\找工\\\\2025 秋\\\\Current\\\\Peiyuan Li Resume 26NG.pdf\" \"K:\\\\JobPilot\\\\data\\\\resumes\\\\resume_main.pdf\")"
+      "Bash(copy \"c:\\\\Users\\\\23995\\\\Desktop\\\\找工\\\\2025 秋\\\\Current\\\\Peiyuan Li Resume 26NG.pdf\" \"K:\\\\JobPilot\\\\data\\\\resumes\\\\resume_main.pdf\")",
+      "mcp__chrome-devtools__new_page",
+      "Bash(npm run db:push:*)",
+      "Bash(curl:*)",
+      "mcp__chrome-devtools__evaluate_script",
+      "Bash(sqlite3:*)",
+      "mcp__chrome-devtools__press_key",
+      "Bash(python3:*)",
+      "Bash(pip install:*)",
+      "mcp__shadcn__search_items_in_registries",
+      "mcp__shadcn__view_items_in_registries",
+      "mcp__shadcn__get_item_examples_from_registries",
+      "Bash(npx tsc:*)",
+      "mcp__chrome-devtools__select_page",
+      "mcp__chrome-devtools__close_page"
+    ],
+    "additionalDirectories": [
+      "/Users/peiyuanli/Documents/GitHub/JobPilot/data/resumes"
     ]
   },
   "enabledMcpjsonServers": [

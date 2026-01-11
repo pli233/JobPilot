@@ -1,19 +1,16 @@
 {
   "mcpServers": {
     "chrome-devtools": {
-      "command": "cmd",
+      "command": "npx",
       "args": [
-        "/c",
-        "npx",
         "-y",
-        "chrome-devtools-mcp@latest"
+        "chrome-devtools-mcp@latest",
+        "--browserUrl=http://127.0.0.1:9222"
       ]
     },
     "firecrawl-mcp": {
-      "command": "cmd",
+      "command": "npx",
       "args": [
-        "/c",
-        "npx",
         "-y",
         "firecrawl-mcp"
       ],
@@ -43,28 +40,22 @@
       ]
     },
     "next-devtools": {
-      "command": "cmd",
+      "command": "npx",
       "args": [
-        "/c",
-        "npx",
         "-y",
         "next-devtools-mcp@latest"
       ]
     },
     "shadcn": {
-      "command": "cmd",
+      "command": "npx",
       "args": [
-        "/c",
-        "npx",
         "shadcn@latest",
         "mcp"
       ]
     },
     "tailwindcss-server": {
-      "command": "cmd",
+      "command": "npx",
       "args": [
-        "/c",
-        "npx",
         "-y",
         "tailwindcss-mcp-server"
       ]

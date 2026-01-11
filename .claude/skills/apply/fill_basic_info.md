@@ -18,7 +18,7 @@ allowed-tools: mcp__chrome-devtools__fill_form, mcp__chrome-devtools__fill, mcp_
 ## 数据来源
 
 ```
-k:\JobPilot\config\profile.json
+config/profile.json
 ```
 
 ## 执行步骤
@@ -26,7 +26,7 @@ k:\JobPilot\config\profile.json
 ### Step 1: 读取个人档案
 
 ```
-Read k:\JobPilot\config\profile.json
+Read config/profile.json
 ```
 
 提取相关信息：

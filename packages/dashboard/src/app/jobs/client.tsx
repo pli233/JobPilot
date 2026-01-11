@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { JobList } from "@/components/jobs/job-list";
+import { JobTable } from "@/components/jobs/job-table";
 import { ApplyDialog } from "@/components/applications/apply-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,7 +16,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Search, Filter, Loader2, Sparkles, Zap } from "lucide-react";
+import { Search, Filter, Loader2, Sparkles, Zap, LayoutGrid, Table as TableIcon } from "lucide-react";
 import { toast } from "sonner";
 import type { Job } from "@/lib/db/schema";
 import { deleteJob } from "@/lib/actions/jobs";
@@ -43,6 +44,9 @@ export function JobSearchClient({ initialJobs }: JobSearchClientProps) {
 
   // Tab state
   const [activeTab, setActiveTab] = useState<"search" | "saved">("search");
+
+  // View mode state for saved jobs
+  const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
 
   // Apply dialog state
   const [applyDialogOpen, setApplyDialogOpen] = useState(false);
@@ -326,10 +330,33 @@ export function JobSearchClient({ initialJobs }: JobSearchClientProps) {
           {/* Filters for saved jobs */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Filter className="h-5 w-5" />
-                Filter Saved Jobs
-              </CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Filter className="h-5 w-5" />
+                  Filter Saved Jobs
+                </CardTitle>
+                {/* View Mode Toggle */}
+                <div className="flex items-center gap-1 rounded-lg border p-1">
+                  <Button
+                    variant={viewMode === "cards" ? "secondary" : "ghost"}
+                    size="sm"
+                    className="h-8 px-3"
+                    onClick={() => setViewMode("cards")}
+                  >
+                    <LayoutGrid className="h-4 w-4 mr-1" />
+                    Cards
+                  </Button>
+                  <Button
+                    variant={viewMode === "table" ? "secondary" : "ghost"}
+                    size="sm"
+                    className="h-8 px-3"
+                    onClick={() => setViewMode("table")}
+                  >
+                    <TableIcon className="h-4 w-4 mr-1" />
+                    Table
+                  </Button>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <div className="flex flex-col gap-4 md:flex-row">
@@ -376,13 +403,21 @@ export function JobSearchClient({ initialJobs }: JobSearchClientProps) {
             </p>
           </div>
 
-          {/* Job List */}
+          {/* Job List / Table */}
           {isPending ? (
             <div className="flex items-center justify-center py-12">
               <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
             </div>
           ) : filteredJobs.length > 0 ? (
-            <JobList jobs={filteredJobs} onApply={handleApply} onSave={handleSave} />
+            viewMode === "table" ? (
+              <JobTable
+                jobs={filteredJobs}
+                onApply={handleApply}
+                onRemove={handleRemove}
+              />
+            ) : (
+              <JobList jobs={filteredJobs} onApply={handleApply} onSave={handleSave} />
+            )
           ) : (
             <Card className="p-8 text-center">
               <Sparkles className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />

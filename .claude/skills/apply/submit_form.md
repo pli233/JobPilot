@@ -70,7 +70,7 @@ mcp__chrome-devtools__wait_for({
 ```
 mcp__chrome-devtools__take_screenshot({
   fullPage: true,
-  filePath: "k:\\JobPilot\\data\\screenshots\\{company}-{date}-confirmation.png"
+  filePath: "data/screenshots/{company}-{date}-confirmation.png"
 })
 ```
 

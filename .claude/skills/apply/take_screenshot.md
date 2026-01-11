@@ -31,7 +31,7 @@ allowed-tools: mcp__chrome-devtools__take_screenshot, Bash
 ### Step 1: 确定保存路径
 
 ```
-k:\JobPilot\data\screenshots\{company}-{YYYY-MM-DD}-{type}.png
+data/screenshots/{company}-{YYYY-MM-DD}-{type}.png
 ```
 
 示例: `anthropic-2025-01-11-preview.png`
@@ -42,7 +42,7 @@ k:\JobPilot\data\screenshots\{company}-{YYYY-MM-DD}-{type}.png
 mcp__chrome-devtools__take_screenshot({
   fullPage: true,
   format: "png",
-  filePath: "k:\\JobPilot\\data\\screenshots\\anthropic-2025-01-11-preview.png"
+  filePath: "data/screenshots/anthropic-2025-01-11-preview.png"
 })
 ```
 
@@ -62,7 +62,7 @@ mcp__chrome-devtools__take_screenshot({
 
 确认文件已保存：
 ```bash
-ls -la k:/JobPilot/data/screenshots/anthropic-2025-01-11-preview.png
+ls -la data/screenshots/anthropic-2025-01-11-preview.png
 ```
 
 ## 输出格式
@@ -72,7 +72,7 @@ ls -la k:/JobPilot/data/screenshots/anthropic-2025-01-11-preview.png
 
 类型: 提交前预览
 文件: anthropic-2025-01-11-preview.png
-路径: k:\JobPilot\data\screenshots\
+路径: data/screenshots/
 大小: 1.2 MB
 分辨率: 1920 x 3200
 

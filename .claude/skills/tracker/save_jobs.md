@@ -52,7 +52,7 @@ allowed-tools: mcp__excel__read_data_from_excel, mcp__excel__write_data_to_excel
 
 ```
 mcp__excel__read_data_from_excel({
-  filepath: "k:\\JobPilot\\data\\job_tracker.xlsx",
+  filepath: "data/job_tracker.xlsx",
   sheet_name: "Saved Jobs"
 })
 ```
@@ -80,7 +80,7 @@ mcp__excel__read_data_from_excel({
 
 ```
 mcp__excel__write_data_to_excel({
-  filepath: "k:\\JobPilot\\data\\job_tracker.xlsx",
+  filepath: "data/job_tracker.xlsx",
   sheet_name: "Saved Jobs",
   data: [[...jobs_data]],
   start_cell: "A{next_row}"

@@ -26,12 +26,12 @@ allowed-tools: Read, Write, Bash, mcp__excel__read_data_from_excel, mcp__excel__
 
 ```bash
 # 创建备份目录
-mkdir -p k:/JobPilot/backups/{date}
+mkdir -p backups/{date}
 
 # 复制配置文件
-cp k:/JobPilot/config/preferences.json k:/JobPilot/backups/{date}/
-cp k:/JobPilot/config/qa_templates.json k:/JobPilot/backups/{date}/
-cp k:/JobPilot/data/job_tracker.xlsx k:/JobPilot/backups/{date}/
+cp config/preferences.json backups/{date}/
+cp config/qa_templates.json backups/{date}/
+cp data/job_tracker.xlsx backups/{date}/
 ```
 
 ### 导出申请记录为 JSON
@@ -114,7 +114,7 @@ Read Excel → 转换为 JSON → 保存
 ```
 ## 导出完成
 
-备份路径: k:\JobPilot\backups\2025-01-11\
+备份路径: backups/2025-01-11/
 包含文件:
 - preferences.json (1.2 KB)
 - qa_templates.json (2.4 KB)
@@ -127,7 +127,7 @@ Read Excel → 转换为 JSON → 保存
 ```
 ## 导入完成
 
-来源: k:\JobPilot\backups\2025-01-10\
+来源: backups/2025-01-10/
 模式: 合并
 
 导入结果:
@@ -135,5 +135,5 @@ Read Excel → 转换为 JSON → 保存
 - 问答模板: 新增 3 个，更新 2 个，保留 5 个
 - 申请记录: 新增 15 条
 
-注意: 原配置已备份到 k:\JobPilot\backups\pre-import\
+注意: 原配置已备份到 backups/pre-import/
 ```

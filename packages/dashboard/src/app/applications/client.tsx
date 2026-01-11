@@ -2,31 +2,27 @@
 
 import { useState, useTransition } from "react";
 import { ApplicationKanban } from "@/components/applications/application-kanban";
+import { ApplicationTable } from "@/components/applications/application-table";
+import { ApplicationDetailDialog } from "@/components/applications/application-detail-dialog";
 import { Button } from "@/components/ui/button";
-import { Download, RefreshCw, Loader2, Info } from "lucide-react";
+import { Download, RefreshCw, Loader2, Info, Table as TableIcon, Kanban } from "lucide-react";
 import { toast } from "sonner";
-import { updateApplicationStatus } from "@/lib/actions/applications";
-import { getExcelExportData } from "@/lib/actions/export";
+import { updateApplicationStatus, deleteApplication } from "@/lib/actions/applications";
 import { useRouter } from "next/navigation";
-
-interface Application {
-  id: string;
-  company: string;
-  position: string;
-  platform: string;
-  status: string;
-  appliedAt: Date;
-  url?: string;
-}
+import type { ApplicationCardData } from "@/components/applications/kanban-card";
 
 interface ApplicationsClientProps {
-  initialApplications: Application[];
+  initialApplications: ApplicationCardData[];
 }
 
 export function ApplicationsClient({ initialApplications }: ApplicationsClientProps) {
   const [applications, setApplications] = useState(initialApplications);
   const [isPending, startTransition] = useTransition();
+  const [isSyncing, setIsSyncing] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+  const [viewMode, setViewMode] = useState<"kanban" | "table">("kanban");
+  const [selectedApplication, setSelectedApplication] = useState<ApplicationCardData | null>(null);
+  const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const router = useRouter();
 
   const handleStatusChange = (applicationId: string, newStatus: string) => {
@@ -54,37 +50,93 @@ export function ApplicationsClient({ initialApplications }: ApplicationsClientPr
     toast.success("Data refreshed");
   };
 
+  const handleDelete = async (applicationId: string) => {
+    if (!confirm("Are you sure you want to delete this application?")) {
+      return;
+    }
+
+    try {
+      const success = await deleteApplication(applicationId);
+      if (success) {
+        setApplications((prev) => prev.filter((app) => app.id !== applicationId));
+        toast.success("Application deleted");
+      } else {
+        toast.error("Failed to delete application");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete application");
+    }
+  };
+
+  const handleBulkDelete = async (applicationIds: string[]) => {
+    if (!confirm(`Are you sure you want to delete ${applicationIds.length} applications?`)) {
+      return;
+    }
+
+    try {
+      let successCount = 0;
+      for (const id of applicationIds) {
+        const success = await deleteApplication(id);
+        if (success) successCount++;
+      }
+
+      if (successCount > 0) {
+        setApplications((prev) => prev.filter((app) => !applicationIds.includes(app.id)));
+        toast.success(`Deleted ${successCount} applications`);
+      }
+
+      if (successCount < applicationIds.length) {
+        toast.error(`Failed to delete ${applicationIds.length - successCount} applications`);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete applications");
+    }
+  };
+
+  const handleSync = async () => {
+    setIsSyncing(true);
+    try {
+      // Dynamic import to avoid server-action issues in client component if strict
+      const { syncApplicationsFromExcel } = await import("@/lib/actions/sync-excel");
+      const result = await syncApplicationsFromExcel();
+      if (result.success) {
+        toast.success(`Synced ${result.count} applications from Excel`);
+        router.refresh();
+      } else {
+        toast.error(`Sync failed: ${result.error}`);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to sync");
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
   const handleExport = async () => {
     setIsExporting(true);
     try {
-      const exportData = await getExcelExportData("applications");
+      const { syncApplicationsToExcel } = await import("@/lib/actions/sync-excel");
+      const result = await syncApplicationsToExcel();
 
-      // Show info about using Excel MCP
-      toast.info(
-        <div className="space-y-2">
-          <p className="font-medium">Export Ready</p>
-          <p className="text-sm">
-            Ask Claude to write to Excel using:
-          </p>
-          <code className="text-xs bg-muted p-1 rounded block">
-            excel:write_data_to_excel
-          </code>
-          <p className="text-xs text-muted-foreground">
-            File: {exportData.filepath}
-          </p>
-        </div>,
-        { duration: 8000 }
-      );
+      if (result.success) {
+        toast.success(`Success! Exported ${result.count} applications to Excel.`);
+      } else {
+        toast.error(`Export failed: ${result.error}`);
+      }
     } catch {
-      toast.error("Failed to prepare export");
+      toast.error("Failed to export to Excel");
     } finally {
       setIsExporting(false);
     }
   };
 
   const statusCounts = {
+    unapplied: applications.filter((a) => a.status === "unapplied").length,
     applied: applications.filter((a) => a.status === "applied").length,
-    viewed: applications.filter((a) => a.status === "viewed").length,
+    oa: applications.filter((a) => a.status === "oa").length,
     interview: applications.filter((a) => a.status === "interview").length,
     offer: applications.filter((a) => a.status === "offer").length,
     rejected: applications.filter((a) => a.status === "rejected").length,
@@ -101,6 +153,31 @@ export function ApplicationsClient({ initialApplications }: ApplicationsClientPr
           </p>
         </div>
         <div className="flex gap-2">
+          {/* View Mode Toggle */}
+          <div className="flex items-center gap-1 rounded-lg border p-1">
+            <Button
+              variant={viewMode === "kanban" ? "secondary" : "ghost"}
+              size="sm"
+              className="h-8 px-3"
+              onClick={() => setViewMode("kanban")}
+            >
+              <Kanban className="h-4 w-4 mr-1" />
+              Kanban
+            </Button>
+            <Button
+              variant={viewMode === "table" ? "secondary" : "ghost"}
+              size="sm"
+              className="h-8 px-3"
+              onClick={() => setViewMode("table")}
+            >
+              <TableIcon className="h-4 w-4 mr-1" />
+              Table
+            </Button>
+          </div>
+          <Button variant="outline" onClick={handleSync} disabled={isSyncing}>
+            <RefreshCw className={`mr-2 h-4 w-4 ${isSyncing ? "animate-spin" : ""}`} />
+            Sync Excel
+          </Button>
           <Button variant="outline" onClick={handleRefresh} disabled={isPending}>
             <RefreshCw className={`mr-2 h-4 w-4 ${isPending ? "animate-spin" : ""}`} />
             Refresh
@@ -117,10 +194,11 @@ export function ApplicationsClient({ initialApplications }: ApplicationsClientPr
       </div>
 
       {/* Stats Summary */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
         {[
+          { label: "Unapplied", count: statusCounts.unapplied, color: "bg-gray-500" },
           { label: "Applied", count: statusCounts.applied, color: "bg-blue-500" },
-          { label: "Viewed", count: statusCounts.viewed, color: "bg-yellow-500" },
+          { label: "OA", count: statusCounts.oa, color: "bg-yellow-500" },
           { label: "Interview", count: statusCounts.interview, color: "bg-purple-500" },
           { label: "Offer", count: statusCounts.offer, color: "bg-green-500" },
           { label: "Rejected", count: statusCounts.rejected, color: "bg-red-500" },
@@ -146,11 +224,33 @@ export function ApplicationsClient({ initialApplications }: ApplicationsClientPr
         </div>
       )}
 
-      {/* Kanban Board */}
+      {/* Kanban Board or Table View */}
       {applications.length > 0 && (
-        <ApplicationKanban
-          applications={applications}
-          onStatusChange={handleStatusChange}
+        viewMode === "kanban" ? (
+          <ApplicationKanban
+            applications={applications}
+            onStatusChange={handleStatusChange}
+          />
+        ) : (
+          <ApplicationTable
+            applications={applications}
+            onStatusChange={handleStatusChange}
+            onRowClick={(app) => {
+              setSelectedApplication(app);
+              setDetailDialogOpen(true);
+            }}
+            onDelete={handleDelete}
+            onBulkDelete={handleBulkDelete}
+          />
+        )
+      )}
+
+      {/* Application Detail Dialog */}
+      {selectedApplication && (
+        <ApplicationDetailDialog
+          application={selectedApplication}
+          open={detailDialogOpen}
+          onOpenChange={setDetailDialogOpen}
         />
       )}
     </div>

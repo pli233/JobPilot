@@ -16,10 +16,11 @@ allowed-tools: Read, AskUserQuestion
 
 ## 执行步骤
 
-### Step 1: 读取问答模板
+### Step 1: 读取配置文件
 
 ```
-Read k:\JobPilot\config\qa_templates.json
+Read config/qa_templates.json   # 问答模板
+Read config/profile.json        # 个人信息，用于生成个性化答案
 ```
 
 ### Step 2: 提取表单问题
@@ -145,9 +146,9 @@ My unique combination of strong technical skills and experience in...
 | {company} | 从职位信息提取 |
 | {position} | 从职位信息提取 |
 | {field} | 从职位描述推断 |
-| {years} | preferences 或简历 |
+| {years} | profile.json work_experience 计算 |
 | {skill} | 从职位要求匹配 |
-| {range} | preferences.salary_expectation |
+| {range} | preferences.json salary 配置 |
 | {timeframe} | 默认 "2 weeks" |
 
 ## 注意事项

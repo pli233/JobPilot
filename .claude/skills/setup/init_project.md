@@ -14,23 +14,23 @@ allowed-tools: mcp__excel__create_workbook, mcp__excel__create_worksheet, mcp__e
 ### Step 1: 创建目录结构
 
 ```bash
-mkdir -p k:/JobPilot/.claude/skills/setup
-mkdir -p k:/JobPilot/.claude/skills/search
-mkdir -p k:/JobPilot/.claude/skills/apply
-mkdir -p k:/JobPilot/.claude/skills/tracker
-mkdir -p k:/JobPilot/.claude/skills/utils
-mkdir -p k:/JobPilot/data/resumes
-mkdir -p k:/JobPilot/data/screenshots
-mkdir -p k:/JobPilot/config
+mkdir -p .claude/skills/setup
+mkdir -p .claude/skills/search
+mkdir -p .claude/skills/apply
+mkdir -p .claude/skills/tracker
+mkdir -p .claude/skills/utils
+mkdir -p data/resumes
+mkdir -p data/screenshots
+mkdir -p config
 ```
 
 ### Step 2: 创建 Excel 追踪表
 
-如果 `k:\JobPilot\data\job_tracker.xlsx` 不存在：
+如果 `data/job_tracker.xlsx` 不存在：
 
 1. 创建工作簿
 ```
-mcp__excel__create_workbook({ filepath: "k:\\JobPilot\\data\\job_tracker.xlsx" })
+mcp__excel__create_workbook({ filepath: "data/job_tracker.xlsx" })
 ```
 
 2. 重命名默认工作表为 Applications
@@ -41,7 +41,7 @@ mcp__excel__rename_worksheet({ filepath: "...", old_name: "Sheet1", new_name: "A
 3. 写入 Applications 表头
 ```
 mcp__excel__write_data_to_excel({
-  filepath: "k:\\JobPilot\\data\\job_tracker.xlsx",
+  filepath: "data/job_tracker.xlsx",
   sheet_name: "Applications",
   data: [["ID", "Date", "Platform", "Company", "Position", "Location", "Status", "Match Score", "Resume", "URL", "Notes"]],
   start_cell: "A1"
@@ -56,7 +56,7 @@ mcp__excel__create_worksheet({ filepath: "...", sheet_name: "Saved Jobs" })
 5. 写入 Saved Jobs 表头
 ```
 mcp__excel__write_data_to_excel({
-  filepath: "k:\\JobPilot\\data\\job_tracker.xlsx",
+  filepath: "data/job_tracker.xlsx",
   sheet_name: "Saved Jobs",
   data: [["ID", "Platform", "Company", "Position", "Location", "Salary", "Easy Apply", "Match Score", "Saved At", "Applied"]],
   start_cell: "A1"
@@ -65,7 +65,7 @@ mcp__excel__write_data_to_excel({
 
 ### Step 3: 创建个人档案文件 (profile.json)
 
-如果 `k:\JobPilot\config\profile.json` 不存在，创建默认档案：
+如果 `config/profile.json` 不存在，创建默认档案：
 
 ```json
 {
@@ -115,7 +115,7 @@ mcp__excel__write_data_to_excel({
 
 ### Step 4: 创建求职偏好文件 (preferences.json)
 
-如果 `k:\JobPilot\config\preferences.json` 不存在，创建默认偏好：
+如果 `config/preferences.json` 不存在，创建默认偏好：
 
 ```json
 {
@@ -152,7 +152,7 @@ mcp__excel__write_data_to_excel({
 
 ### Step 5: 创建 QA 模板文件 (qa_templates.json)
 
-如果 `k:\JobPilot\config\qa_templates.json` 不存在，创建默认模板：
+如果 `config/qa_templates.json` 不存在，创建默认模板：
 
 ```json
 {

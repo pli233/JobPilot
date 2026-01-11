@@ -46,7 +46,7 @@ Any State → Withdrawn (主动撤回)
 
 ```
 mcp__excel__read_data_from_excel({
-  filepath: "k:\\JobPilot\\data\\job_tracker.xlsx",
+  filepath: "data/job_tracker.xlsx",
   sheet_name: "Applications"
 })
 ```
@@ -80,7 +80,7 @@ mcp__excel__read_data_from_excel({
 
 ```
 mcp__excel__write_data_to_excel({
-  filepath: "k:\\JobPilot\\data\\job_tracker.xlsx",
+  filepath: "data/job_tracker.xlsx",
   sheet_name: "Applications",
   data: [["{new_status}"]],
   start_cell: "G{row_number}"
@@ -93,7 +93,7 @@ mcp__excel__write_data_to_excel({
 
 ```
 mcp__excel__write_data_to_excel({
-  filepath: "k:\\JobPilot\\data\\job_tracker.xlsx",
+  filepath: "data/job_tracker.xlsx",
   sheet_name: "Applications",
   data: [["{notes}"]],
   start_cell: "K{row_number}"

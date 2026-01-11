@@ -18,9 +18,10 @@ allowed-tools: mcp__chrome-devtools__upload_file, mcp__chrome-devtools__take_sna
 
 ### Step 1: 确认简历文件路径
 
-默认路径: `k:\JobPilot\data\resumes\resume_main.pdf`
+从 config/profile.json 的 `documents.resume_path` 读取简历路径。
+默认路径: `data/resumes/resume_main.pdf`
 
-如果需要特定简历，可从参数指定或从 preferences.json 读取。
+如果需要特定简历，可从参数指定。
 
 ### Step 2: 识别上传字段
 
@@ -34,9 +35,11 @@ allowed-tools: mcp__chrome-devtools__upload_file, mcp__chrome-devtools__take_sna
 ```
 mcp__chrome-devtools__upload_file({
   uid: "{file_input_uid}",
-  filePath: "k:\\JobPilot\\data\\resumes\\resume_main.pdf"
+  filePath: "{项目绝对路径}/data/resumes/resume_main.pdf"
 })
 ```
+
+注意：使用项目的绝对路径，如 `/Users/xxx/Documents/GitHub/JobPilot/data/resumes/resume_main.pdf`
 
 ### Step 4: 等待上传完成
 
@@ -119,7 +122,7 @@ mcp__chrome-devtools__click({ uid: "{upload_button_uid}" })
 
 ## 注意事项
 
-1. 文件路径使用双反斜杠 `\\`
+1. macOS/Linux 使用正斜杠 `/`，Windows 使用双反斜杠 `\\`
 2. 确保文件存在且可读
 3. 某些平台会解析简历内容
 4. 上传后可能自动填充部分字段

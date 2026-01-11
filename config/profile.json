@@ -13,10 +13,9 @@
       "country": "United States"
     },
     "date_of_birth": "",
-    "gender": "",
+    "gender": "Male",
     "pronouns": ""
   },
-
   "online_presence": {
     "linkedin_url": "https://www.linkedin.com/in/peiyuan",
     "github_url": "https://github.com/pli233",
@@ -25,7 +24,6 @@
     "twitter_url": "",
     "other_links": []
   },
-
   "education": [
     {
       "school": "Brown University",
@@ -36,7 +34,12 @@
       "gpa": "4.00",
       "location": "Providence, RI, US",
       "achievements": [],
-      "coursework": ["Deep Learning", "Self-Supervised Learning", "Computer Vision", "AI Security"]
+      "coursework": [
+        "Deep Learning",
+        "Self-Supervised Learning",
+        "Computer Vision",
+        "AI Security"
+      ]
     },
     {
       "school": "University of Wisconsin - Madison",
@@ -50,10 +53,16 @@
         "Dean's List (2020, 2021, 2022, 2023)",
         "Vice President and Director of Fundraising & Public Relations of Student Union"
       ],
-      "coursework": ["Data Structures", "Algorithms", "Machine Learning", "Computer Graphics", "Database", "OS"]
+      "coursework": [
+        "Data Structures",
+        "Algorithms",
+        "Machine Learning",
+        "Computer Graphics",
+        "Database",
+        "OS"
+      ]
     }
   ],
-
   "work_experience": [
     {
       "company": "GreenSand AI",
@@ -107,7 +116,6 @@
       ]
     }
   ],
-
   "skills": {
     "technical": [
       "Deep Learning",
@@ -175,15 +183,19 @@
       }
     ]
   },
-
   "certifications": [],
-
   "projects": [
     {
       "name": "S2D2: A Self-Supervised Dataset Distillation Framework for Foundation Models",
       "description": "Developed an unsupervised dataset distillation framework combining self-supervised learning (DINOv2/CLIP) with hierarchical clustering and soft-label optimization, enabling model-agnostic compression that distills ImageNet-1K to 1,000-10,000 synthetic images while maintaining generalization performance across foundation models",
       "url": "",
-      "technologies": ["Python", "PyTorch", "DINOv2", "CLIP", "Self-Supervised Learning"],
+      "technologies": [
+        "Python",
+        "PyTorch",
+        "DINOv2",
+        "CLIP",
+        "Self-Supervised Learning"
+      ],
       "start_date": "2024-11",
       "end_date": "2025-02"
     },
@@ -191,33 +203,38 @@
       "name": "Music OCR System Based on ViT-YOLO Architecture",
       "description": "Developed an OCR system that converts sheet music images into playable audio by integrating YOLO's efficient local object detection with Vision Transformer's global context modeling, achieving 98% accuracy on the DeepScores v2 dataset",
       "url": "",
-      "technologies": ["Python", "PyTorch", "YOLO", "Vision Transformer", "Computer Vision"],
+      "technologies": [
+        "Python",
+        "PyTorch",
+        "YOLO",
+        "Vision Transformer",
+        "Computer Vision"
+      ],
       "start_date": "2024-09",
       "end_date": "2024-12"
     }
   ],
-
   "documents": {
     "resume_path": "data/resumes/resume_main.pdf",
     "cover_letter_template": "",
     "additional_documents": []
   },
-
   "work_authorization": {
     "authorized_to_work": true,
     "requires_sponsorship": true,
     "visa_status": "F-1 Student",
     "citizenship": ""
   },
-
   "demographics": {
-    "veteran_status": "",
-    "disability_status": "",
-    "ethnicity": "",
-    "race": []
+    "gender": "Male",
+    "hispanic_latino": false,
+    "veteran_status": "I am not a protected veteran",
+    "disability_status": "I do not want to answer",
+    "ethnicity": "Not Hispanic or Latino",
+    "race": [
+      "Asian"
+    ]
   },
-
   "professional_summary": "AI/ML Software Engineer with experience in full-stack development, multi-agent systems, and large-scale distributed systems. Master's student at Brown University specializing in Deep Learning and Computer Vision. Proven track record at Huawei, Epic Systems, and startups building RAG systems, AI infrastructure, and production ML pipelines.",
-
   "references": []
 }

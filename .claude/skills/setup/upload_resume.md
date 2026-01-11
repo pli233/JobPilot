@@ -33,7 +33,7 @@ allowed-tools: Read, Write, Bash, AskUserQuestion
 ### Step 3: 复制到项目目录
 
 ```bash
-cp "{source_path}" "k:/JobPilot/data/resumes/{name}.pdf"
+cp "{source_path}" "data/resumes/{name}.pdf"
 ```
 
 ### Step 4: 解析简历内容 (可选)
@@ -54,7 +54,7 @@ cp "{source_path}" "k:/JobPilot/data/resumes/{name}.pdf"
 ## 简历上传成功
 
 文件: {name}.pdf
-路径: k:\JobPilot\data\resumes\{name}.pdf
+路径: data/resumes/{name}.pdf
 大小: {size} KB
 默认简历: {yes/no}
 

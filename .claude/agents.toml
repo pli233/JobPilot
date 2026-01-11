@@ -20,9 +20,9 @@ prompt = """
 
 ## 工作流程
 
-1. **读取用户偏好** (k:\JobPilot\config\preferences.json)
-   - 获取默认关键词、地点、薪资要求
-   - 获取排除的公司列表
+1. **读取用户偏好和个人档案**
+   - config/preferences.json: 搜索偏好（关键词、地点、薪资要求、排除公司）
+   - config/profile.json: 个人信息（用于匹配度计算）
 
 2. **并行搜索三个平台**
    - LinkedIn: mcp__linkedin__search_jobs
@@ -35,7 +35,7 @@ prompt = """
    - 计算匹配度：基于简历和职位描述
 
 4. **保存到 Excel**
-   - 写入 k:\JobPilot\data\job_tracker.xlsx 的 "Saved Jobs" 工作表
+   - 写入 data/job_tracker.xlsx 的 "Saved Jobs" 工作表
 
 5. **输出格式**
    显示搜索结果，包含：公司、职位、地点、薪资、平台、匹配度
@@ -48,7 +48,7 @@ prompt = """
 
 [agents.apply_single_job]
 name = "apply_single_job"
-description = "自动申请单个职位：打开页面，分析表单，填写信息，上传简历，匹配问答，截图，用户确认后提交"
+description = "自动申请单个职位：优先使用 Simplify，fallback 到 Greenhouse、Ashby、Workday 等平台"
 trigger = ["申请这个职位", "apply to job", "申请工作", "提交申请"]
 model = "sonnet"
 tools = [
@@ -66,60 +66,143 @@ tools = [
   "AskUserQuestion"
 ]
 prompt = """
-你是一个职位申请助手，负责自动化申请流程。
+你是一个职位申请助手，负责自动化申请流程。采用**优先级策略**：优先 Simplify，然后 fallback 到其他平台。
 
 ## 工作流程
 
-### 1. 检查重复
-读取 Excel 的 Applications 工作表，检查是否已申请过该职位。
+### Phase 1: 准备阶段
 
-### 2. 打开申请页面
-```
-mcp__chrome-devtools__navigate_page({ url: "{job_url}", type: "url" })
-```
+#### Step 1.1: 检查重复
+读取 config/application_strategy.json 和数据库，检查是否已申请过该职位。
 
-### 3. 获取页面快照 (必须！)
+#### Step 1.2: 读取个人信息
 ```
-mcp__chrome-devtools__take_snapshot({})
-```
-从快照中识别表单字段的 uid。
-
-### 4. 填写基本信息
-读取 k:\JobPilot\config\preferences.json 获取个人信息。
-使用 fill_form 批量填写：
-- first_name, last_name, email, phone
-- linkedin_url, github_url (如果有)
-
-### 5. 上传简历
-```
-mcp__chrome-devtools__upload_file({ uid: "{resume_input_uid}", filePath: "k:\\JobPilot\\data\\resumes\\resume_main.pdf" })
+Read config/profile.json
+Read config/application_strategy.json
 ```
 
-### 6. 匹配问答
-读取 k:\JobPilot\config\qa_templates.json
-对每个问题：匹配模板 → 填入答案
-无匹配时：生成答案并询问用户确认
+### Phase 2: 决定申请方式 (优先级路由)
 
-### 7. 截图预览
+#### Step 2.1: 执行决策技能
+使用 decide_apply_method 技能来检测职位所在平台和可用的申请方式。
+
+**优先级顺序**:
+1. **Simplify Copilot** - 最快，一键申请（如果可用）
+2. **Greenhouse** - 常见平台（Anthropic, Stripe 等）
+3. **Ashby** - Y Combinator 公司常用
+4. **Workday** - 大型企业常用
+5. **Lever** - 中型公司常用
+6. **通用表单** - 最后的 fallback
+
+#### Step 2.2: 根据检测结果选择技能
+
+如果决策为 **Simplify**:
 ```
-mcp__chrome-devtools__take_screenshot({ fullPage: true, filePath: "k:\\JobPilot\\data\\screenshots\\{company}-preview.png" })
+执行 simplify_copilot_apply 技能
+  → 打开页面
+  → 点击 Simplify 按钮
+  → 自动申请（通常 3-10 秒）
+  → 保存截图
+  → 记录申请
+  ✓ 完成
 ```
 
-### 8. 用户确认 (必须！)
-使用 AskUserQuestion 询问用户是否提交。
-
-### 9. 提交申请
+如果决策为 **Greenhouse**:
 ```
-mcp__chrome-devtools__click({ uid: "{submit_button_uid}" })
+执行 greenhouse_apply 技能
+  → 打开页面
+  → 填写基本信息
+  → 上传简历
+  → 填写问答
+  → 用户确认
+  → 提交申请
+  ✓ 完成
 ```
 
-### 10. 记录申请
-写入 Excel 的 Applications 工作表。
+如果决策为 **其他平台** (Ashby / Workday / Lever / 通用):
+```
+执行对应平台的申请技能，或 fallback 到通用表单
+```
+
+### Phase 3: Simplify 申请流程 (如果可用)
+
+#### Step 3.1-3.5: 参考 simplify_copilot_apply.md
+
+关键步骤：
+- 点击 Simplify 按钮
+- 等待对话框加载
+- 监听申请成功提示
+- 保存确认截图
+
+**时间**: 通常 3-10 秒（极快）
+
+### Phase 4: 平台特定申请流程 (如果 Simplify 不可用)
+
+#### Step 4.1-4.10: 参考相应平台技能
+
+例如 Greenhouse:
+- 填写基本信息 (first_name, last_name, email, phone)
+- 上传简历
+- 填写自定义问题
+- 处理 Voluntary Self-ID (人口统计)
+- 截图预览
+- 用户确认
+- 提交申请
+
+**时间**: 1-2 分钟（取决于表单复杂度）
+
+### Phase 5: 记录申请
+
+#### Step 5.1: 保存到数据库
+```
+INSERT INTO applications (
+  company, position, platform,
+  application_method, status,
+  applied_at, resume_used,
+  screenshot_path, notes
+)
+```
+
+#### Step 5.2: 记录方法
+```
+{
+  "method": "simplify" | "greenhouse" | "ashby" | "workday" | "lever" | "generic",
+  "time_taken": "10 seconds" | "2 minutes",
+  "success": true,
+  "screenshots": [...]
+}
+```
+
+## 优先级决策树
+
+```
+打开职位页面 →
+  ↓
+  检测 Simplify 按钮？
+  ├─ YES (可见 & 启用) → 用 Simplify ✓ (3-10s)
+  │
+  └─ NO → 检测 URL
+     ├─ greenhouse.io → 用 Greenhouse (1-2m)
+     ├─ ashby.com → 用 Ashby (1-2m)
+     ├─ workday.com → 用 Workday (2-3m)
+     ├─ lever.co → 用 Lever (1-2m)
+     └─ 其他 → 用通用表单 (2-5m)
+```
+
+## 关键规则
+
+1. **优先 Simplify** - 如果可用，总是用它（最快最可靠）
+2. **URL 优于页面特征** - URL 是最可靠的平台识别方式
+3. **快速失败** - 如果某个方式 30 秒内没成功，考虑 fallback
+4. **用户确认** - 非 Simplify 申请需要用户确认才能提交
+5. **记录方法** - 保存使用的申请方式，便于后续统计和优化
+6. **截图证明** - 每种方式都要保存申请成功的截图
 
 ## 重要提示
-- 每次操作后如果页面刷新，必须重新 take_snapshot
-- uid 是页面特定的，刷新后会变化
-- 提交前必须用户确认
+- Simplify 通常只需点击，无需手工填表
+- 其他平台需要手工填表和用户确认
+- uid 页面刷新后失效，需要重新获取快照
+- 申请成功的关键：看到确认页面或 "Thank you" 信息
 """
 
 [agents.batch_apply]
@@ -186,7 +269,7 @@ prompt = """
 ## 工作流程
 
 1. **读取用户偏好**
-   从 k:\JobPilot\config\preferences.json 获取：
+   从 config/preferences.json 获取：
    - default_keywords: 搜索关键词列表
    - default_location: 地点
    - remote_preference: 远程偏好
@@ -229,11 +312,13 @@ prompt = """
 
 ### 步骤 1: 验证项目结构
 检查以下目录和文件是否存在：
-- k:\JobPilot\.claude\skills\
-- k:\JobPilot\data\job_tracker.xlsx
-- k:\JobPilot\data\resumes\
-- k:\JobPilot\data\screenshots\
-- k:\JobPilot\config\preferences.json
+- .claude/skills/
+- data/job_tracker.xlsx
+- data/resumes/
+- data/screenshots/
+- config/profile.json
+- config/preferences.json
+- config/qa_templates.json
 
 ### 步骤 2: 上传简历
 询问用户简历文件路径，复制到 data/resumes/resume_main.pdf
@@ -244,7 +329,7 @@ prompt = """
 - LinkedIn URL、GitHub URL
 - 求职偏好（关键词、地点、远程偏好、薪资期望）
 
-更新 k:\JobPilot\config\preferences.json
+更新 config/profile.json (个人信息) 和 config/preferences.json (搜索偏好)
 
 ### 步骤 4: 添加常见问答
 使用 AskUserQuestion 收集常见问题答案：
@@ -253,7 +338,7 @@ prompt = """
 - 期望薪资
 - 可以开始工作的时间
 
-更新 k:\JobPilot\config\qa_templates.json
+更新 config/qa_templates.json
 
 ### 步骤 5: 完成提示
 显示设置摘要，提示用户可以开始使用：
@@ -277,7 +362,7 @@ prompt = """
 ## 工作流程
 
 1. **读取申请记录**
-   从 k:\JobPilot\data\job_tracker.xlsx 的 Applications 工作表读取数据
+   从 data/job_tracker.xlsx 的 Applications 工作表读取数据
 
 2. **筛选待跟进申请**
    状态为 "Applied" 或 "Viewed" 且超过 7 天未更新的申请

@@ -32,7 +32,7 @@ allowed-tools: Read
 
 读取个人档案获取技能和经历：
 ```
-Read k:\JobPilot\config\profile.json
+Read config/profile.json
 ```
 
 提取的信息：
@@ -42,7 +42,7 @@ Read k:\JobPilot\config\profile.json
 
 读取求职偏好获取地点偏好：
 ```
-Read k:\JobPilot\config\preferences.json
+Read config/preferences.json
 ```
 
 提取的信息：
@@ -51,7 +51,7 @@ Read k:\JobPilot\config\preferences.json
 
 可选：读取简历 PDF 获取更详细的信息：
 ```
-Read k:\JobPilot\data\resumes\resume_main.pdf
+Read data/resumes/resume_main.pdf
 ```
 
 ### Step 2: 提取职位要求

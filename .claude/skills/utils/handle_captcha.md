@@ -39,7 +39,7 @@ mcp__chrome-devtools__take_snapshot({})
 
 ```
 mcp__chrome-devtools__take_screenshot({
-  filePath: "k:\\JobPilot\\data\\screenshots\\captcha.png"
+  filePath: "data/screenshots/captcha.png"
 })
 ```
 

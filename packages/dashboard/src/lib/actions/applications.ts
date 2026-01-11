@@ -13,11 +13,20 @@ export interface ApplicationWithJob {
   appliedAt: Date | null;
   notes: string | null;
   screenshotPath: string | null;
+  confirmationScreenshotPath: string | null;
   createdAt: Date;
   company: string | null;
   position: string | null;
   platform: string | null;
   url: string | null;
+  // Extended fields
+  resumeName: string | null;
+  applicationUrl: string | null;
+  salaryMin: number | null;
+  salaryMax: number | null;
+  location: string | null;
+  locationType: string | null;
+  demographicsSubmitted: boolean | null;
 }
 
 export async function getApplications(): Promise<ApplicationWithJob[]> {
@@ -31,11 +40,20 @@ export async function getApplications(): Promise<ApplicationWithJob[]> {
         appliedAt: applications.appliedAt,
         notes: applications.notes,
         screenshotPath: applications.screenshotPath,
+        confirmationScreenshotPath: applications.confirmationScreenshotPath,
         createdAt: applications.createdAt,
         company: jobs.company,
         position: jobs.title,
-        platform: jobs.platform,
+        platform: applications.platform,
         url: jobs.url,
+        // Extended fields
+        resumeName: applications.resumeName,
+        applicationUrl: applications.applicationUrl,
+        salaryMin: applications.salaryMin,
+        salaryMax: applications.salaryMax,
+        location: applications.location,
+        locationType: applications.locationType,
+        demographicsSubmitted: applications.demographicsSubmitted,
       })
       .from(applications)
       .leftJoin(jobs, eq(applications.jobId, jobs.id))
@@ -60,11 +78,20 @@ export async function getApplicationById(id: string): Promise<ApplicationWithJob
         appliedAt: applications.appliedAt,
         notes: applications.notes,
         screenshotPath: applications.screenshotPath,
+        confirmationScreenshotPath: applications.confirmationScreenshotPath,
         createdAt: applications.createdAt,
         company: jobs.company,
         position: jobs.title,
-        platform: jobs.platform,
+        platform: applications.platform,
         url: jobs.url,
+        // Extended fields
+        resumeName: applications.resumeName,
+        applicationUrl: applications.applicationUrl,
+        salaryMin: applications.salaryMin,
+        salaryMax: applications.salaryMax,
+        location: applications.location,
+        locationType: applications.locationType,
+        demographicsSubmitted: applications.demographicsSubmitted,
       })
       .from(applications)
       .leftJoin(jobs, eq(applications.jobId, jobs.id))

@@ -14,9 +14,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Save, User, Search, MessageSquare, Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import { EducationForm } from "@/components/settings/education-form";
+import { ExperienceForm } from "@/components/settings/experience-form";
+import { ProjectsForm } from "@/components/settings/projects-form";
+import { SkillsForm } from "@/components/settings/skills-form";
 import {
+  updateEducation,
+  updateWorkExperience,
+  updateProjects,
+  updateSkills,
+  type Education,
+  type WorkExperience,
+  type Project,
+  type Skills,
   updatePersonalInfo,
   updateSearchPreferences,
   updateCommonAnswers,
@@ -25,6 +35,18 @@ import {
   type SearchPreferences,
   type CommonAnswers,
 } from "@/lib/actions/config";
+import {
+  GraduationCap,
+  Briefcase,
+  Code,
+  Cpu,
+  Save,
+  User,
+  Search,
+  MessageSquare,
+  Loader2
+} from "lucide-react";
+import { toast } from "sonner";
 
 interface SettingsClientProps {
   initialPreferences: Preferences | null;
@@ -45,11 +67,11 @@ export function SettingsClient({ initialPreferences }: SettingsClientProps) {
   );
 
   const [searchPrefs, setSearchPrefs] = useState({
-    defaultKeywords: initialPreferences?.search_preferences.default_keywords.join(", ") || "",
-    defaultLocation: initialPreferences?.search_preferences.default_location || "",
-    remotePreference: initialPreferences?.search_preferences.remote_preference || "remote",
-    salaryMin: String(initialPreferences?.search_preferences.salary_min || 150000),
-    excludedCompanies: initialPreferences?.search_preferences.excluded_companies.join(", ") || "",
+    defaultKeywords: initialPreferences?.search_preferences?.default_keywords?.join(", ") || "",
+    defaultLocation: initialPreferences?.search_preferences?.default_location || "",
+    remotePreference: initialPreferences?.search_preferences?.remote_preference || "remote",
+    salaryMin: String(initialPreferences?.search_preferences?.salary_min || 150000),
+    excludedCompanies: initialPreferences?.search_preferences?.excluded_companies?.join(", ") || "",
   });
 
   const [commonAnswers, setCommonAnswers] = useState<CommonAnswers>(
@@ -77,7 +99,7 @@ export function SettingsClient({ initialPreferences }: SettingsClientProps) {
       const prefs: SearchPreferences = {
         default_keywords: searchPrefs.defaultKeywords.split(",").map((s) => s.trim()).filter(Boolean),
         default_location: searchPrefs.defaultLocation,
-        remote_preference: searchPrefs.remotePreference,
+        remote_preference: searchPrefs.remotePreference as "remote" | "hybrid" | "onsite" | "any",
         salary_min: parseInt(searchPrefs.salaryMin) || 0,
         excluded_companies: searchPrefs.excludedCompanies.split(",").map((s) => s.trim()).filter(Boolean),
         preferred_companies: [],
@@ -102,6 +124,41 @@ export function SettingsClient({ initialPreferences }: SettingsClientProps) {
     });
   };
 
+  // New states are implicitly handled by the initialPreferences passed to child components
+  // But we need the save handlers
+
+  const handleSaveEducation = (education: Education[]) => {
+    startTransition(async () => {
+      const success = await updateEducation(education);
+      if (success) toast.success("Education saved");
+      else toast.error("Failed to save education");
+    });
+  };
+
+  const handleSaveExperience = (experience: WorkExperience[]) => {
+    startTransition(async () => {
+      const success = await updateWorkExperience(experience);
+      if (success) toast.success("Experience saved");
+      else toast.error("Failed to save experience");
+    });
+  };
+
+  const handleSaveProjects = (projects: Project[]) => {
+    startTransition(async () => {
+      const success = await updateProjects(projects);
+      if (success) toast.success("Projects saved");
+      else toast.error("Failed to save projects");
+    });
+  };
+
+  const handleSaveSkills = (skills: Skills) => {
+    startTransition(async () => {
+      const success = await updateSkills(skills);
+      if (success) toast.success("Skills saved");
+      else toast.error("Failed to save skills");
+    });
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -113,10 +170,26 @@ export function SettingsClient({ initialPreferences }: SettingsClientProps) {
       </div>
 
       <Tabs defaultValue="personal" className="space-y-4">
-        <TabsList>
+        <TabsList className="h-auto flex-wrap gap-2">
           <TabsTrigger value="personal">
             <User className="h-4 w-4 mr-2" />
             Personal Info
+          </TabsTrigger>
+          <TabsTrigger value="education">
+            <GraduationCap className="h-4 w-4 mr-2" />
+            Education
+          </TabsTrigger>
+          <TabsTrigger value="experience">
+            <Briefcase className="h-4 w-4 mr-2" />
+            Experience
+          </TabsTrigger>
+          <TabsTrigger value="projects">
+            <Code className="h-4 w-4 mr-2" />
+            Projects
+          </TabsTrigger>
+          <TabsTrigger value="skills">
+            <Cpu className="h-4 w-4 mr-2" />
+            Skills
           </TabsTrigger>
           <TabsTrigger value="search">
             <Search className="h-4 w-4 mr-2" />
@@ -211,6 +284,45 @@ export function SettingsClient({ initialPreferences }: SettingsClientProps) {
               </Button>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="education">
+          <EducationForm
+            initialEducation={initialPreferences?.education || []}
+            onSave={handleSaveEducation}
+            isPending={isPending}
+          />
+        </TabsContent>
+
+        <TabsContent value="experience">
+          <ExperienceForm
+            initialExperience={initialPreferences?.work_experience || []}
+            onSave={handleSaveExperience}
+            isPending={isPending}
+          />
+        </TabsContent>
+
+        <TabsContent value="projects">
+          <ProjectsForm
+            initialProjects={initialPreferences?.projects || []}
+            onSave={handleSaveProjects}
+            isPending={isPending}
+          />
+        </TabsContent>
+
+        <TabsContent value="skills">
+          <SkillsForm
+            initialSkills={initialPreferences?.skills || {
+              technical: [],
+              programming_languages: [],
+              frameworks: [],
+              tools: [],
+              soft_skills: [],
+              languages: []
+            }}
+            onSave={handleSaveSkills}
+            isPending={isPending}
+          />
         </TabsContent>
 
         {/* Search Preferences */}

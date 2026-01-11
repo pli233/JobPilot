@@ -17,12 +17,12 @@ interface RecentApplicationsProps {
 }
 
 const statusColors: Record<string, string> = {
+  unapplied: "bg-gray-500",
   applied: "bg-blue-500",
-  viewed: "bg-yellow-500",
+  oa: "bg-yellow-500",
   interview: "bg-purple-500",
-  rejected: "bg-red-500",
   offer: "bg-green-500",
-  draft: "bg-gray-500",
+  rejected: "bg-red-500",
 };
 
 export function RecentApplications({ applications }: RecentApplicationsProps) {

@@ -1,0 +1,84 @@
+{
+  "apply_strategy": "simplify_first",
+  "description": "优先使用 Simplify Copilot，如果不可用则 fallback 到其他平台",
+  "priority_order": [
+    {
+      "priority": 1,
+      "name": "simplify_copilot",
+      "description": "Simplify Copilot 浏览器插件 - 最快自动申请",
+      "enabled": true,
+      "detection": [
+        "simplify-icon",
+        "simplify-button",
+        "Simplify"
+      ]
+    },
+    {
+      "priority": 2,
+      "name": "greenhouse",
+      "description": "Greenhouse 申请平台（Anthropic, Stripe 等使用）",
+      "enabled": true,
+      "detection": [
+        "greenhouse.io",
+        "Apply for this job",
+        "submit application"
+      ]
+    },
+    {
+      "priority": 3,
+      "name": "ashby",
+      "description": "Ashby 申请平台（Y Combinator 公司常用）",
+      "enabled": true,
+      "detection": [
+        "ashby.com",
+        "Ashby",
+        "ashby-form"
+      ]
+    },
+    {
+      "priority": 4,
+      "name": "workday",
+      "description": "Workday HCM 系统（大型企业常用）",
+      "enabled": true,
+      "detection": [
+        "workday.com",
+        "Workday",
+        "workdayConfig"
+      ]
+    },
+    {
+      "priority": 5,
+      "name": "lever",
+      "description": "Lever 申请平台",
+      "enabled": true,
+      "detection": [
+        "lever.co",
+        "Lever",
+        "lever-form"
+      ]
+    },
+    {
+      "priority": 6,
+      "name": "generic",
+      "description": "通用网页表单 - 最后的 fallback",
+      "enabled": true,
+      "detection": [
+        "form",
+        "input[type=text]",
+        "submit"
+      ]
+    }
+  ],
+  "fallback_behavior": {
+    "if_simplify_unavailable": "try_platform_specific",
+    "if_all_unavailable": "ask_user",
+    "retry_count": 2,
+    "timeout_seconds": 30
+  },
+  "detection_rules": {
+    "check_element_visibility": true,
+    "check_button_enabled": true,
+    "wait_for_page_load": true,
+    "load_timeout_ms": 5000
+  }
+}

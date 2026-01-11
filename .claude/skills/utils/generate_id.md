@@ -90,7 +90,7 @@ unique_id = str(uuid.uuid4())
 
 ```
 mcp__excel__read_data_from_excel({
-  filepath: "k:\\JobPilot\\data\\job_tracker.xlsx",
+  filepath: "data/job_tracker.xlsx",
   sheet_name: "Applications"
 })
 ```

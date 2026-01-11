@@ -31,7 +31,7 @@ allowed-tools: mcp__excel__read_data_from_excel, mcp__excel__write_data_to_excel
 
 ```
 mcp__excel__create_worksheet({
-  filepath: "k:\\JobPilot\\data\\job_tracker.xlsx",
+  filepath: "data/job_tracker.xlsx",
   sheet_name: "Report-2025-01-11"
 })
 ```
@@ -40,7 +40,7 @@ mcp__excel__create_worksheet({
 
 ```
 mcp__excel__write_data_to_excel({
-  filepath: "k:\\JobPilot\\data\\job_tracker.xlsx",
+  filepath: "data/job_tracker.xlsx",
   sheet_name: "Report-2025-01-11",
   data: [
     ["Job Search Report", "", "", "", "Generated: 2025-01-11 10:00"],
@@ -77,7 +77,7 @@ mcp__excel__write_data_to_excel({
 
 ```
 mcp__excel__format_range({
-  filepath: "k:\\JobPilot\\data\\job_tracker.xlsx",
+  filepath: "data/job_tracker.xlsx",
   sheet_name: "Report-2025-01-11",
   start_cell: "A1",
   end_cell: "E1",
@@ -92,7 +92,7 @@ mcp__excel__format_range({
 
 ```
 mcp__excel__create_chart({
-  filepath: "k:\\JobPilot\\data\\job_tracker.xlsx",
+  filepath: "data/job_tracker.xlsx",
   sheet_name: "Report-2025-01-11",
   data_range: "A11:C18",
   chart_type: "bar",
@@ -107,7 +107,7 @@ mcp__excel__create_chart({
 ```
 ## 报告已导出
 
-**文件**: k:\JobPilot\data\job_tracker.xlsx
+**文件**: data/job_tracker.xlsx
 **工作表**: Report-2025-01-11
 
 **报告内容**:
@@ -127,7 +127,7 @@ mcp__excel__create_chart({
 ```
 ## 报告已导出
 
-**文件**: k:\JobPilot\data\reports\report-2025-01-11.json
+**文件**: data/reports/report-2025-01-11.json
 
 **内容预览**:
 ```json
