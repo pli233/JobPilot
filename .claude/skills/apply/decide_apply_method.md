@@ -22,9 +22,10 @@ allowed-tools: mcp__chrome-devtools__navigate_page, mcp__chrome-devtools__take_s
 优先级 1: Simplify Copilot     (最快，只需点击)
 优先级 2: Greenhouse            (常见平台，有专门技能)
 优先级 3: Ashby                 (Y Combinator 公司常用)
-优先级 4: Workday               (大型企业)
-优先级 5: Lever                 (中型公司常用)
-优先级 6: 通用网页表单          (fallback)
+优先级 4: Lever                 (中型公司常用)
+优先级 5: Workday               (大型企业)
+优先级 6: BambooHR / Workable   (其他常见 ATS)
+优先级 7: 通用网页表单          (fallback)
 ```
 
 ## 执行流程
@@ -100,6 +101,7 @@ heading level 2 or 3 starting with "Apply"
 ```
 text "Ashby"
 URL contains "ashby.com"
+URL contains "ashbyhq.com"
 form with class "ashby-form" or id containing "ashby"
 button with "Ashby" text
 ```
@@ -110,24 +112,7 @@ button with "Ashby" text
   执行: ashby_apply 技能 (如果存在)
 ```
 
-#### 4.4 检测 Workday
-
-快照中查找以下元素：
-
-```
-URL contains "workday.com"
-text "Workday"
-javascript variable "workdayConfig"
-form with Workday-specific styling
-```
-
-如果找到:
-```
-✓ 推荐: Workday 申请平台
-  执行: workday_apply 技能 (如果存在)
-```
-
-#### 4.5 检测 Lever
+#### 4.4 检测 Lever
 
 快照中查找以下元素：
 
@@ -144,7 +129,55 @@ button with "Lever" reference
   执行: lever_apply 技能 (如果存在)
 ```
 
-#### 4.6 检测通用表单 (Fallback)
+#### 4.5 检测 Workday
+
+快照中查找以下元素：
+
+```
+URL contains "workday.com"
+text "Workday"
+javascript variable "workdayConfig"
+form with Workday-specific styling
+```
+
+如果找到:
+```
+✓ 推荐: Workday 申请平台
+  执行: workday_apply 技能 (如果存在)
+```
+
+#### 4.6 检测 BambooHR
+
+快照中查找以下元素：
+
+```
+URL contains "bamboohr.com"
+text "BambooHR"
+class contains "bamboohr"
+```
+
+如果找到:
+```
+✓ 推荐: BambooHR 申请平台(通用模式)
+  执行: generic_form_apply 技能
+```
+
+#### 4.7 检测 Workable
+
+快照中查找以下元素：
+
+```
+URL contains "workable.com"
+text "Workable"
+```
+
+如果找到:
+```
+✓ 推荐: Workable 申请平台(通用模式)
+  执行: generic_form_apply 技能
+```
+
+#### 4.8 检测通用表单 (Fallback)
 
 快照中查找通用 HTML 表单元素：
 
@@ -215,9 +248,11 @@ button with "Submit" or "Apply" text
 **确定指标**: URL 明确包含平台域名
 ```
 greenhouse.io → Greenhouse
-ashby.com → Ashby
-workday.com → Workday
+ashbyhq.com / ashby.com → Ashby
 lever.co → Lever
+workday.com → Workday
+bamboohr.com → BambooHR
+workable.com → Workable
 ```
 
 **推断指标**: 页面内容或 JavaScript 变量
@@ -262,9 +297,10 @@ window.workdayConfig → Workday
 | URL 特征 | 检测平台 | 技能 | 支持度 |
 |----------|---------|------|--------|
 | greenhouse.io | Greenhouse | greenhouse_apply | ★★★★★ |
-| ashby.com | Ashby | ashby_apply | ★★★★☆ |
+| ashbyhq.com | Ashby | ashby_apply | ★★★★☆ |
+| lever.co | Lever | lever_apply | ★★★★☆ |
 | workday.com | Workday | workday_apply | ★★★☆☆ |
-| lever.co | Lever | lever_apply | ★★★☆☆ |
+| bamboohr.com | BambooHR | generic_form_apply | ★★☆☆☆ |
 | Simplify 按钮 | Simplify | simplify_copilot_apply | ★★★★★ |
 | 通用表单 | 通用 | generic_form_apply | ★★☆☆☆ |
 

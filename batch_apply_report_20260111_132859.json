@@ -1,0 +1,214 @@
+{
+  "timestamp": "2026-01-11T13:25:44.413282",
+  "total_processed": 34,
+  "successful": 34,
+  "failed": 0,
+  "elapsed_seconds": 195.302903,
+  "applied_jobs": [
+    {
+      "id": "linkedin_4334640920",
+      "company": "DataAnnotation",
+      "title": "Full Stack Developer (Kotlin or Java)",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4334680338",
+      "company": "DataAnnotation",
+      "title": "Mobile Software Engineer",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4334680350",
+      "company": "DataAnnotation",
+      "title": "Software Engineer (Mobile Focus)",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4334700261",
+      "company": "DataAnnotation",
+      "title": "Software Engineer (Mobile Focus)",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4334710198",
+      "company": "DataAnnotation",
+      "title": "Software Engineer (Mobile Focus)",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4334720171",
+      "company": "DataAnnotation",
+      "title": "Software Engineer (Mobile Focus)",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4345214585",
+      "company": "Rippling",
+      "title": "Software Engineer II, Platform",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4345251891",
+      "company": "Intuit",
+      "title": "Software Engineer 1",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4345274326",
+      "company": "MITRE",
+      "title": "Generative AI Engineer",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4345303784",
+      "company": "Jobs via Dice",
+      "title": "Entry level AI/ML Engineer: SVL",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4345323034",
+      "company": "Jobs via Dice",
+      "title": "Software Engineer, Numerical Modelling",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4345324022",
+      "company": "hackajob",
+      "title": "Backend Go Developer (Train AI Models Part Time!)",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4345333838",
+      "company": "hackajob",
+      "title": "Machine Learning Engineer (Train AI Models Part Time!)",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4345343882",
+      "company": "Cyber Focus AI",
+      "title": "Enterprise Cybersecurity Sales Engineer",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4345353107",
+      "company": "Channel3",
+      "title": "Backend Engineer",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4345353497",
+      "company": "Widger Talent",
+      "title": "Full-Stack Engineer (TypeScript) / Product Builder",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4345372839",
+      "company": "Jobs via Dice",
+      "title": "Application Software Engineer, Data",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4345393040",
+      "company": "Jobs via Dice",
+      "title": "Cyber Software Engineer - Early Career",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4350791893",
+      "company": "BeaconFire Inc.",
+      "title": "Junior Software Engineer",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4351832970",
+      "company": "Jobs via Dice",
+      "title": "Software Engineer, Displays Software (Starship)",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4351832973",
+      "company": "Jobs via Dice",
+      "title": "Associate Software Engineer",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4351852667",
+      "company": "Verita AI",
+      "title": "Front-End Engineers With AI Tools",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4352237829",
+      "company": "BeaconFire Inc.",
+      "title": "Software Engineer in Test",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4352308684",
+      "company": "Moneta",
+      "title": "Software Engineer",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4358924111",
+      "company": "EPITEC",
+      "title": "Audio Software Engineer II",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4359783031",
+      "company": "Rippling",
+      "title": "Software Engineer II, Backend Full Stack",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4359793936",
+      "company": "Pear VC",
+      "title": "AI Integrations Backend Engineer",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4359905778",
+      "company": "Lensa",
+      "title": "Systems Engineer (Entry-level)",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4359923196",
+      "company": "NetApp",
+      "title": "NetApp Emerging Talent - Entry Level Software Engineer",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4359985334",
+      "company": "Lensa",
+      "title": "Data Engineer, Analytics (University Grad)",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4360633754",
+      "company": "Speechify",
+      "title": "Software Engineer, Platform - Charleston, USA",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4360642214",
+      "company": "Pear VC",
+      "title": "Software Engineer, AI Applications - TrueMeter",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4360643866",
+      "company": "Lensa",
+      "title": "REMOTE- Junior Data Engineer",
+      "platform": "LinkedIn"
+    },
+    {
+      "id": "linkedin_4360653807",
+      "company": "Lensa",
+      "title": "Entry Level Software Engineer",
+      "platform": "LinkedIn"
+    }
+  ],
+  "failed_jobs": []
+}

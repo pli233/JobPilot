@@ -7,8 +7,8 @@
 ## 核心能力
 
 通过 MCP 工具，你可以：
-- **搜索职位**: LinkedIn / Indeed / Glassdoor 多平台搜索
-- **自动申请**: 浏览器自动化填表、上传简历、提交申请
+- **搜索职位**: Multi-platform Search (LinkedIn + Indeed + Glassdoor) & **Direct ATS Search** (Greenhouse/Lever/Ashby)
+- **自动申请**: Support 7+ Platforms (Simplify, Greenhouse, Lever, Ashby, Workday, BambooHR, Workable)
 - **数据追踪**: Excel 记录所有申请状态和统计
 
 ---
@@ -134,3 +134,10 @@ config/
 - "申请这个职位 [URL]"
 - "检查申请状态"
 - "每日搜索"
+
+## 💡 搜索技巧
+
+- **精准搜索**: "搜索 full stack engineer site:greenhouse.io" (只搜 Greenhouse 职位)
+- **排除**: "搜索 python engineer -senior" (排除 senior)
+- **ATS直搜**: 搜索命令现在会自动包含 ATS 来源，通常由于聚合器。
+
