@@ -1,0 +1,48 @@
+{
+  "$schema": "https://raw.githubusercontent.com/anthropics/claude-code/main/schemas/hooks.schema.json",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": {
+          "tool_name": "Write",
+          "file_path": "*.tsx"
+        },
+        "hook": {
+          "type": "command",
+          "command": "echo '[Hook] TSX file updated: checking types...' && cd dashboard && npx tsc --noEmit --skipLibCheck 2>/dev/null || true"
+        }
+      },
+      {
+        "matcher": {
+          "tool_name": "mcp__excel__write_data_to_excel"
+        },
+        "hook": {
+          "type": "command",
+          "command": "echo '[Hook] Excel data updated'"
+        }
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": {
+          "tool_name": "mcp__chrome-devtools__click"
+        },
+        "hook": {
+          "type": "command",
+          "command": "echo '[Hook] Browser action: click'"
+        }
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": {
+          "type": "application_submitted"
+        },
+        "hook": {
+          "type": "command",
+          "command": "echo '[Notification] Application submitted successfully!'"
+        }
+      }
+    ]
+  }
+}

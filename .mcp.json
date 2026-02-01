@@ -29,7 +29,7 @@
         "stickerdaniel/linkedin-mcp-server:latest"
       ],
       "env": {
-        "LINKEDIN_COOKIE": "AQEDAUOYKGMC5hd8AAABmly7E7gAAAGbuLH0204AIa33B8gw9sY5KL78-7KeZ0x8elmOA2n6hukWkYu7KVwfEo5ZNvwT5JH3YAnYCVEDvpDy_FhzXX7l7WXSxjEU5X89Y7y5q_7yok4O0ihqv3mcw9zb"
+        "LINKEDIN_COOKIE": "li_at=AQEDAUOYKGMAGIS8AAABm82n824AAAGb8bR3bk4AlZN6MQK2Ild9DoDQTr5HXzOwoUhGTeV7t0j0QIz9zST6rj6ivfby2ioA-fJKtl5dIFSvA4L9Xa52Zn0fWZAoN21zZSWt3qTJUzTzVQJQguUHDfEp"
       }
     },
     "excel": {

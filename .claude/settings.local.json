@@ -51,12 +51,27 @@
       "mcp__chrome-devtools__select_page",
       "mcp__chrome-devtools__close_page",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: 调整申请策略 - 优先使用 Simplify Copilot，fallback 到其他平台\n\n## 核心改动\n\n### 1. 新增申请策略配置\n- config/application_strategy.json: 定义申请优先级和检测规则\n- 优先级顺序: Simplify → Greenhouse → Ashby → Workday → Lever → 通用表单\n\n### 2. 新增申请策略技能\n- decide_apply_method.md: 申请方式决策路由器（核心）\n  - 自动检测职位平台\n  - 按优先级选择申请方式\n  - 返回决策结果给上层调用\n\n- simplify_copilot_apply.md: Simplify Copilot 一键申请技能\n  - 最快的申请方式（3-10 秒）\n  - 只需点击 Simplify 按钮\n  - 处理验证码和邮箱验证\n\n- generic_form_apply.md: 通用网页表单申请（fallback）\n  - 识别标准 HTML 表单\n  - 自动填写基本信息\n  - 尽力处理自定义问题\n  - 提示用户补充缺失信息\n\n### 3. 更新申请工作流\n- agents.toml: 更新 apply_single_job agent\n  - 新增优先级决策流程\n  - 支持多个平台的自动选择\n  - 记录申请方式供后续统计\n\n### 4. 文档\n- APPLY_STRATEGY.md: 完整申请策略文档\n  - 详细说明优先级\n  - 使用示例和故障排查\n  - 常见问题解答\n\n- APPLY_QUICK_REFERENCE.txt: 快速参考卡\n  - 一页纸总结\n  - 包含流程图和对比表\n\n## 优先级对比\n\n| 方式 | 时间 | 自动化 | 成功率 |\n|------|------|--------|--------|\n| Simplify | 3-10s | 99% | 95%+ |\n| Greenhouse | 1-2m | 60% | 99% |\n| 通用表单 | 2-5m | 40% | 85% |\n\n## 使用方式\n\n用户命令:\n  \"申请这个职位 [URL]\"\n\n自动流程:\n  1. decide_apply_method: 打开页面，检测平台\n  2. 根据检测结果选择申请技能 \\(simplify/greenhouse/generic\\)\n  3. 执行申请，保存截图\n  4. 记录申请到数据库\n\n## 优势\n\n- ✨ 自动检测平台，无需用户指定\n- ⚡ 优先使用最快的方式（Simplify）\n- 🎯 每个平台有专门的处理策略\n- 🛡️ 智能 fallback，确保申请不会失败\n- 📊 记录申请方式，便于优化\n- 🔧 配置化优先级，易于调整\n\nCo-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
-      "mcp__next-devtools__browser_eval"
+      "mcp__next-devtools__browser_eval",
+      "Bash(tree:*)",
+      "Bash(wc:*)",
+      "Bash(docker --version:*)",
+      "Bash(docker ps:*)",
+      "Bash(docker logs:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_snapshot",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_wait_for",
+      "Bash(dir:*)",
+      "Bash(powershell -Command \"Get-ChildItem -Force | Select-Object Name, Attributes\")",
+      "Bash(python:*)"
     ],
     "additionalDirectories": [
       "/Users/peiyuanli/Documents/GitHub/JobPilot/data/resumes"
     ]
   },
+  "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "chrome-devtools",
     "firecrawl-mcp",

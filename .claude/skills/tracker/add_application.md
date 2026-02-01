@@ -1,13 +1,19 @@
 ---
 name: add_application
-description: 记录新的申请到 Excel 追踪表。在成功提交申请后调用。
+description: 记录新的申请到 Supabase 数据库。手动记录申请后调用。
 trigger: ["记录申请", "add application", "添加申请记录"]
-allowed-tools: mcp__excel__read_data_from_excel, mcp__excel__write_data_to_excel, Read
+allowed-tools: WebFetch, Read
 ---
 
 # Add Application Skill
 
-记录新申请到追踪表。
+记录新申请到 Supabase 数据库。
+
+## 数据存储
+
+- **主存储**: Supabase PostgreSQL (远程数据库)
+- **API**: Dashboard API (`POST /api/applications`)
+- **查看**: Dashboard UI (http://localhost:3000/applications)
 
 ## 输入参数
 
@@ -15,81 +21,43 @@ allowed-tools: mcp__excel__read_data_from_excel, mcp__excel__write_data_to_excel
 |------|------|------|
 | company | 公司名称 | Yes |
 | position | 职位名称 | Yes |
-| platform | 申请平台 | Yes |
-| url | 职位 URL | No |
-| status | 初始状态 | No (默认 "Applied") |
-| match_score | 匹配度 | No |
-| resume | 使用的简历 | No |
+| platform | 申请平台 | No |
+| url | 职位/申请 URL | No |
+| status | 初始状态 | No (默认 "applied") |
 | notes | 备注 | No |
-
-## Excel 表结构
-
-**工作表**: Applications
-
-| 列 | 字段 | 说明 |
-|----|------|------|
-| A | ID | APP-YYYYMMDD-NNN |
-| B | Date | 申请日期 |
-| C | Platform | 申请平台 |
-| D | Company | 公司名称 |
-| E | Position | 职位名称 |
-| F | Location | 地点 |
-| G | Status | 申请状态 |
-| H | Match Score | 匹配度 (0-100) |
-| I | Resume | 使用的简历文件名 |
-| J | URL | 职位链接 |
-| K | Notes | 备注 |
+| location | 地点 | No |
+| salaryMin | 最低薪资 | No |
+| salaryMax | 最高薪资 | No |
 
 ## 执行步骤
 
-### Step 1: 读取现有记录
+### Step 1: 创建申请记录
+
+直接创建申请记录（可以不关联 job）：
 
 ```
-mcp__excel__read_data_from_excel({
-  filepath: "data/job_tracker.xlsx",
-  sheet_name: "Applications"
-})
+POST http://localhost:3000/api/applications
+Content-Type: application/json
+
+{
+  "company": "Anthropic",
+  "position": "Senior Python Engineer",
+  "status": "applied",
+  "platform": "linkedin",
+  "application_url": "https://linkedin.com/jobs/view/123456",
+  "location": "San Francisco, CA",
+  "salary_min": 180000,
+  "salary_max": 220000,
+  "notes": "投递于 LinkedIn"
+}
 ```
 
-确定下一行位置和 ID 编号。
+### Step 2: 确认记录
 
-### Step 2: 生成申请 ID
-
-格式: `APP-YYYYMMDD-NNN`
+验证申请已保存：
 
 ```
-今日日期: 2025-01-11
-今日已有申请: 2
-新 ID: APP-20250111-003
-```
-
-### Step 3: 准备数据
-
-```json
-[
-  "APP-20250111-003",
-  "2025-01-11",
-  "linkedin",
-  "Anthropic",
-  "Senior Python Engineer",
-  "San Francisco, CA",
-  "Applied",
-  "85",
-  "resume_main.pdf",
-  "https://linkedin.com/jobs/view/123456",
-  "Via Easy Apply"
-]
-```
-
-### Step 4: 写入 Excel
-
-```
-mcp__excel__write_data_to_excel({
-  filepath: "data/job_tracker.xlsx",
-  sheet_name: "Applications",
-  data: [[...data]],
-  start_cell: "A{next_row}"
-})
+GET http://localhost:3000/api/applications
 ```
 
 ## 输出格式
@@ -97,37 +65,27 @@ mcp__excel__write_data_to_excel({
 ```
 ## 申请已记录
 
-**ID**: APP-20250111-003
 **公司**: Anthropic
 **职位**: Senior Python Engineer
 **平台**: LinkedIn
 **状态**: Applied
-**日期**: 2025-01-11
+**日期**: 2025-01-28
 
 ---
 
-**今日申请统计**:
-- 今日申请: 3
-- 每日限制: 20
-- 剩余配额: 17
-
-**总体统计**:
-- 本周申请: 12
-- 本月申请: 45
-- 总申请数: 128
+**查看详情**: http://localhost:3000/applications
 ```
 
 ## 状态值
 
 | 状态 | 说明 |
 |------|------|
-| Applied | 已提交申请 |
-| Viewed | 申请被查看 |
-| Phone Screen | 电话面试 |
-| Interview | 正式面试 |
-| Offer | 收到 Offer |
-| Rejected | 被拒绝 |
-| Withdrawn | 主动撤回 |
+| applied | 已提交申请 |
+| oa | Online Assessment |
+| interview | 面试中 |
+| offer | 收到 Offer |
+| rejected | 被拒绝 |
+| withdrawn | 已撤回 |
 
 ## 平台值
 
@@ -138,14 +96,14 @@ mcp__excel__write_data_to_excel({
 | glassdoor | Glassdoor |
 | greenhouse | Greenhouse ATS |
 | lever | Lever ATS |
+| ashby | Ashby ATS |
 | workday | Workday ATS |
-| direct | 公司官网直接申请 |
+| direct | 公司官网 |
 | referral | 内推 |
 | other | 其他 |
 
 ## 注意事项
 
-1. ID 必须唯一
-2. 日期使用 YYYY-MM-DD 格式
-3. 建议填写所有字段
-4. 及时更新状态
+1. 使用 Dashboard API 操作数据
+2. 确保 Dashboard 服务运行中 (`cd dashboard && npm run dev`)
+3. 申请可以独立于 job 存在，直接提供 company 和 position

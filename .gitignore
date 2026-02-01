@@ -2,3 +2,55 @@ node_modules/
 .DS_Store
 *.log
 nul
+
+# Binaries
+*.exe
+*.dll
+*.so
+*.dylib
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Cache
+.cache/
+*.cache
+.eslintcache
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Sensitive data (keep templates, ignore actual data)
+config/*.local.json
+
+# Playwright MCP temp files
+.playwright-mcp/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+.venv/
+
+# Application data (optional - uncomment if needed)
+# data/db/*.db
+# data/screenshots/
+# batch_apply_report_*.json

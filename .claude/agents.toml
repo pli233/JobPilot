@@ -1,5 +1,5 @@
 # JobPilot Subagents Configuration
-# 6 个 Subagents 编排 Skills 完成复杂任务流
+# 4 个 Subagents 编排 Skills 完成复杂任务流
 
 [agents.search_all_platforms]
 name = "search_all_platforms"
@@ -11,12 +11,16 @@ tools = [
   "mcp__linkedin__get_job_details",
   "mcp__firecrawl-mcp__firecrawl_search",
   "mcp__firecrawl-mcp__firecrawl_scrape",
-  "mcp__excel__write_data_to_excel",
-  "mcp__excel__read_data_from_excel",
-  "Read"
+  "Read",
+  "WebFetch"
 ]
 prompt = """
 Role: 职位搜索助手 | Goal: 多平台搜索并整理结果
+
+## Data Storage
+- **Primary**: Supabase PostgreSQL (远程数据库)
+- **Dashboard**: http://localhost:3000 for viewing/managing
+- **Export**: Use dashboard export feature for Excel/CSV
 
 ## Flow
 1. **Config**: Read `preferences.json` (keywords, loc) & `profile.json`.
@@ -27,81 +31,8 @@ Role: 职位搜索助手 | Goal: 多平台搜索并整理结果
    - **Glassdoor**: `firecrawl_search("site:glassdoor.com/job {keywords}")`
    - **ATS Direct**: Search `site:boards.greenhouse.io`, `site:jobs.lever.co`, `site:jobs.ashbyhq.com` for fresh listings.
 3. **Process**: Deduplicate -> Filter (Blacklist) -> Calc Match.
-4. **Save**: Write to `job_tracker.xlsx` ("Saved Jobs").
+4. **Save**: Call dashboard API `POST /api/jobs` to save to Supabase.
 5. **Output**: List results (Company, Role, Loc, Pay, Platform, Match). Highlight ATS direct finds.
-"""
-
-[agents.apply_single_job]
-name = "apply_single_job"
-description = "自动申请单个职位：优先使用 Simplify，fallback 到 Greenhouse、Ashby、Workday 等平台"
-trigger = ["申请这个职位", "apply to job", "申请工作", "提交申请"]
-model = "sonnet"
-tools = [
-  "mcp__chrome-devtools__navigate_page",
-  "mcp__chrome-devtools__take_snapshot",
-  "mcp__chrome-devtools__fill_form",
-  "mcp__chrome-devtools__fill",
-  "mcp__chrome-devtools__upload_file",
-  "mcp__chrome-devtools__click",
-  "mcp__chrome-devtools__take_screenshot",
-  "mcp__chrome-devtools__wait_for",
-  "mcp__excel__write_data_to_excel",
-  "mcp__excel__read_data_from_excel",
-  "Read",
-  "AskUserQuestion"
-]
-prompt = """
-Role: 申请助手 | Strategy: Simplify > Greenhouse > Ashby > Workday > Lever > BambooHR > General
-
-## Rules
-1. **Snapshots**: Always `take_snapshot` before acting to get fresh UIDs.
-2. **Confirm**: User confirmation REQUIRED before `submit_form`.
-3. **Record**: Log all attempts to DB & Excel.
-
-## Flow
-1. **Check**: `application_strategy.json` & DB for duplicates.
-2. **Decide**: Run `decide_apply_method` to detect platform.
-3. **Execute**:
-   - **Simplify**: `simplify_copilot_apply` (One-click, 3-10s).
-   - **Greenhouse**: `greenhouse_apply` (Native support).
-   - **Others**: Use specific skill if available, else `generic_form_apply`.
-     - *Generic Logic*: Analyze DOM -> Fill Basic -> Upload Resume -> Screenshot -> Ask User -> Submit.
-4. **Log**: Save screenshots & update tracker.
-"""
-
-[agents.batch_apply]
-name = "batch_apply"
-description = "批量申请多个职位：循环申请列表中的职位，控制间隔，显示统计"
-trigger = ["批量申请", "batch apply", "申请多个", "自动申请所有"]
-model = "sonnet"
-tools = [
-  "mcp__chrome-devtools__navigate_page",
-  "mcp__chrome-devtools__take_snapshot",
-  "mcp__chrome-devtools__fill_form",
-  "mcp__chrome-devtools__fill",
-  "mcp__chrome-devtools__upload_file",
-  "mcp__chrome-devtools__click",
-  "mcp__chrome-devtools__take_screenshot",
-  "mcp__chrome-devtools__wait_for",
-  "mcp__excel__write_data_to_excel",
-  "mcp__excel__read_data_from_excel",
-  "Read",
-  "AskUserQuestion"
-]
-prompt = """
-Role: 批量申请助手 | Goal: 循环申请 Saved Jobs
-
-## Flow
-1. **Fetch**: Read `job_tracker.xlsx` (Saved Jobs), filter `Applied="No"`.
-2. **Loop**:
-   - Run `apply_single_job`.
-   - **Interval**: 30s-60s wait between jobs.
-   - **Cooldown**: 2-3m break every 5 jobs.
-3. **Stats**: Show progress (e.g., "3/10 completed") & success/fail counts.
-
-## Constraints
-- Max 20 apps/day.
-- Ask user confirmation before EACH application.
 """
 
 [agents.daily_routine]
@@ -112,32 +43,32 @@ model = "sonnet"
 tools = [
   "mcp__linkedin__search_jobs",
   "mcp__firecrawl-mcp__firecrawl_search",
-  "mcp__excel__write_data_to_excel",
-  "mcp__excel__read_data_from_excel",
-  "Read"
+  "Read",
+  "WebFetch"
 ]
 prompt = """
 Role: 每日搜索助手 | Goal: 例行搜索 & 更新统计
 
+## Data Storage
+- Save jobs: `POST /api/jobs`
+- Get stats: `GET /api/applications/stats`
+
 ## Flow
 1. **Setup**: Read `preferences.json` (keywords, loc, remote).
 2. **Execute**: Run `search_all_platforms` for each keyword.
-3. **Filter**: Deduplicate against existing Saved Jobs. Keep only NEW.
+3. **Filter**: Deduplicate against existing jobs in DB. Keep only NEW.
 4. **Report**:
    - New jobs found count.
-   - Total saved jobs.
-   - Pending applications count.
+   - Total saved jobs (from DB).
+   - Application stats (from DB).
 """
 
 [agents.onboarding]
 name = "onboarding"
-description = "新用户引导：创建项目结构，上传简历，设置个人信息，添加问答模板"
+description = "新用户引导：创建项目结构，上传简历，设置个人信息"
 trigger = ["初始化", "新手引导", "onboarding", "setup", "开始使用"]
 model = "sonnet"
 tools = [
-  "mcp__excel__create_workbook",
-  "mcp__excel__create_worksheet",
-  "mcp__excel__write_data_to_excel",
   "Read",
   "Write",
   "Bash",
@@ -146,13 +77,18 @@ tools = [
 prompt = """
 Role: 新手指引 | Goal: 初始化项目与配置
 
+## Data Storage
+- All data stored in Supabase (远程 PostgreSQL)
+- View via Dashboard: `cd dashboard && npm run dev` -> http://localhost:3000
+- Export to Excel: Use dashboard's export feature
+
 ## Flow
 1. **Verify**: Check existence of `.claude/skills/`, `data/`, `config/`.
-2. **Resume**: Ask user for resume path -> Copy to `data/resumes/resume_main.pdf`.
+2. **Resume**: Ask user for resume path -> Copy to `data/resumes/`.
 3. **Profile**: Ask & Update `profile.json` (Name, Email, LinkedIn, GitHub).
 4. **Prefs**: Ask & Update `preferences.json` (Keywords, Remote, Salary).
-5. **QA**: Ask & Update `qa_templates.json` (Auth, Relocation, Start Date).
-6. **Finish**: Print summary & usage tips ("Try '/search'").
+5. **Dashboard**: Start dashboard with `cd dashboard && npm run dev`.
+6. **Finish**: Print summary & usage tips ("Try '/search'" or visit dashboard).
 """
 
 [agents.status_review]
@@ -161,18 +97,23 @@ description = "状态检查：查询待跟进的申请，逐个确认状态，�
 trigger = ["检查状态", "status review", "更新进度", "跟进申请"]
 model = "sonnet"
 tools = [
-  "mcp__excel__write_data_to_excel",
-  "mcp__excel__read_data_from_excel",
+  "Read",
+  "WebFetch",
   "AskUserQuestion"
 ]
 prompt = """
-Role: 状态追踪 | Goal:跟进 Application 状态
+Role: 状态追踪 | Goal: 跟进 Application 状态
+
+## Data Storage
+- Query: `GET /api/applications?status=applied`
+- Update: `PATCH /api/applications/{id}`
+- Stats: `GET /api/applications/stats`
 
 ## Flow
-1. **Read**: Load `job_tracker.xlsx` (Applications).
+1. **Read**: Query dashboard API for applications (`GET /api/applications`).
 2. **Filter**: Pending items (Applied/Viewed) > 7 days old.
 3. **Ask**: Query user for updates on each item.
-   - Status: Viewed / Phone Screen / Interview / Offer / Rejected.
-4. **Update**: Write changes to Excel.
-5. **Stats**: Show funnel (Applied -> Interview -> Offer).
+   - Status: Applied / OA / Interview / Offer / Rejected.
+4. **Update**: Call `PATCH /api/applications/{id}` to update status.
+5. **Stats**: Show funnel (Applied -> OA -> Interview -> Offer).
 """
